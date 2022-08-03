@@ -28,7 +28,7 @@
       "description": "Tell your team leader that he is the best team leader you've ever had",
       "estimatedTime": "3d",
       "status": "Open",
-      "priotiry": "High",
+      "priority": "High",
       "untilDate": "2020-12-31T23:59:00.0457"
     },
     {
@@ -37,7 +37,7 @@
       "description": "Finish this subtask in your training program",
       "estimated Time": "1w",
       "status": "In Progress",
-      "priotiry": "Medium"
+      "priority": "Medium"
     },
     {
       "id": "3",
@@ -45,7 +45,7 @@
       "description": "Tell your team leader that he is the best team leader you've ever had",
       "estimated Time": "0.5h",
       "status": "Close",
-      "priotiry": "Low",
+      "priority": "Low",
       "review": "The break you took was 30 minutes and 2 seconds, so you have to work 2 more seconds at the end of the day",
       "timeSpent": "30m 2s",
       "untilDate": "2020-12-31T23:59:00.045Z"
