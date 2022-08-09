@@ -40,3 +40,70 @@ app.get("/all-today", (_, res) => {
     ),
   });
 });
+
+app.post(
+  "/saveTask",
+  (
+    req: {
+      params: {
+        dataToSave: {
+          id: string;
+          title: string;
+          description: string;
+          estimatedTime: string;
+          status: string;
+          priority: string;
+          untilDate: string;
+          "estimated Time"?: undefined;
+          review?: undefined;
+          timeSpent?: undefined;
+        };
+      };
+    },
+    res
+  ) => {
+    mock.tasks.push(req.params.dataToSave);
+    res.json({
+      events: mock.events.filter(
+        (event) =>
+          new Date(event["beginning Time"]).getDay() === new Date().getDay()
+      ),
+      tasks: mock.tasks.filter(
+        (task) => task.untilDate === new Date().toDateString()
+      ),
+    });
+  }
+);
+
+app.get(
+  "/saveEvent",
+  (
+    req: {
+      params: {
+        dataToSave: {
+          id: string;
+          title: string;
+          description: string;
+          "beginning Time": string;
+          "ending Time": string;
+          color: string;
+          invitedGuests: never[];
+          "notification Time": string;
+          "invited Guests"?: undefined;
+        };
+      };
+    },
+    res
+  ) => {
+    mock.events.push(req.params.dataToSave);
+    res.json({
+      events: mock.events.filter(
+        (event) =>
+          new Date(event["beginning Time"]).getDay() === new Date().getDay()
+      ),
+      tasks: mock.tasks.filter(
+        (task) => task.untilDate === new Date().toDateString()
+      ),
+    });
+  }
+);
