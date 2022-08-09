@@ -21,6 +21,22 @@ app.use(
   })
 );
 
-app.get("/all", (req, res) => {
-  res.json(mock);
+app.get("/tasks-all", (_, res) => {
+  res.json({ tasks: mock.tasks, events: [] });
+});
+
+app.get("/events-all", (_, res) => {
+  res.json({ events: mock.events, tasks: [] });
+});
+
+app.get("/all-today", (_, res) => {
+  res.json({
+    events: mock.events.filter(
+      (event) =>
+        new Date(event["beginning Time"]).getDay() === new Date().getDay()
+    ),
+    tasks: mock.tasks.filter(
+      (task) => task.untilDate === new Date().toDateString()
+    ),
+  });
 });
