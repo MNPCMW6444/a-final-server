@@ -29,23 +29,14 @@ const eventSchema = new mongoose.Schema(
     },
     invitedGuests: {
       type: String,
-      required: true,
+      required: false,
     },
     location: {
       type: String,
-      required: true,
+      required: false,
     },
     notificationTime: {
       type: Date,
-      required: false,
-    },
-    untilDate: {
-      type: Date,
-      required: false,
-    },
-    review: { type: String, required: false },
-    timeSpent: {
-      type: Number,
       required: false,
     },
   },

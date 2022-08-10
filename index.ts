@@ -39,16 +39,16 @@ mongoose.connect(
 
 app.get("/tasks-all", async (_, res) => {
   // res.json({ tasks: mock.tasks, events: [] });
-  res.json(await Task.find());
+  res.json({ tasks: await Task.find() });
 });
 
 app.get("/events-all", async (_, res) => {
   // res.json({ events: mock.events, tasks: [] });
-  res.json(await Event.find());
+  res.json({ events: await Event.find() });
 });
 
-app.get("/all-today", (_, res) => {
-  res.json({
+app.get("/all-today", async (_, res) => {
+  /* res.json({
     events: mock.events.filter(
       (event) =>
         new Date(event["beginning Time"]).getDay() === new Date().getDay()
@@ -56,6 +56,16 @@ app.get("/all-today", (_, res) => {
     tasks: mock.tasks.filter(
       (task) => task.untilDate === new Date().toDateString()
     ),
+  }); */
+  const now = new Date();
+  const todayBeginnig = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate()
+  );
+  res.json({
+    tasks: await Task.find({ estimatedTime: { $gte: todayBeginnig } }),
+    events: await Event.find({ beginningTime: { $gte: todayBeginnig } }),
   });
 });
 
