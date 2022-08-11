@@ -137,3 +137,15 @@ app.post(
     res.json(await Event.find());
   }
 );
+
+app.delete("/events/:id", async (req, res) => {
+  const event = await Event.findById(req.params.id);
+  if (event) await event.delete();
+  res.json(await Event.find());
+});
+
+app.delete("/tasks/:id", async (req, res) => {
+  const task = await Task.findById(req.params.id);
+  if (task) await task.delete();
+  res.json(await Task.find());
+});
