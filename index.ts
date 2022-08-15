@@ -1,11 +1,10 @@
 import express from "express";
 import cors from "cors";
-import mock from "./mock.json";
+//import mock from "./mock.json";
 import Task from "./models/taskModel";
 import Event from "./models/eventModel";
 import dotenv from "dotenv";
 import mongoose, { ConnectOptions } from "mongoose";
-import { escapeRegExp } from "tslint/lib/utils";
 
 const app = express();
 const port = process.env.PORT || 5001;
