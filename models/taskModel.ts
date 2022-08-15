@@ -30,6 +30,11 @@ const taskSchema = new mongoose.Schema(
       type: Number,
       required: false,
     },
+    location: { type: String, required: false },
+    notificationTime: {
+      type: Date,
+      required: false,
+    },
   },
   {
     timestamps: true,

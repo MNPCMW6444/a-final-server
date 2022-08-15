@@ -5,6 +5,7 @@ import Task from "./models/taskModel";
 import Event from "./models/eventModel";
 import dotenv from "dotenv";
 import mongoose, { ConnectOptions } from "mongoose";
+import { escapeRegExp } from "tslint/lib/utils";
 
 const app = express();
 const port = process.env.PORT || 5001;
@@ -54,7 +55,7 @@ app.get("/all-today", async (_, res) => {
         new Date(event["beginning Time"]).getDay() === new Date().getDay()
     ),
     tasks: mock.tasks.filter(
-      (task) => task.untilDate === new Date().toDateString()
+      (task) => task.untilDate === new Date().toDatestring()
     ),
   }); */
   const now = new Date();
@@ -75,11 +76,14 @@ app.post(
     req: {
       body: {
         dataToSave: {
-          title: String;
-          description: String;
+          title: string;
+          description: string;
           estimatedTime: Date;
-          status: String;
-          priority: String;
+          status: string;
+          priority: string;
+          timeSpent: number;
+          location: string;
+          notificationTime: Date;
         };
       };
     },
@@ -92,12 +96,11 @@ app.post(
         new Date(event["beginning Time"]).getDay() === new Date().getDay()
     ),
     tasks: mock.tasks.filter(
-      (task) => task.untilDate === new Date().toDateString()
+      (task) => task.untilDate === new Date().toDatestring()
     ),
   }); */
-    const newTask = new Task({ ...req.body.dataToSave, id: Math.random() });
+    const newTask = new Task({ ...req.body.dataToSave });
     await newTask.save();
-
     res.json(await Task.find());
   }
 );
@@ -108,15 +111,15 @@ app.post(
     req: {
       body: {
         dataToSave: {
-          title: String;
-          description: String;
+          title: string;
+          description: string;
           estimatedTime: Date;
-          priority: String;
+          priority: string;
           beginningTime: Date;
           endingTime: Date;
-          color?: String;
-          invitedGuests?: String;
-          location?: String;
+          color?: string;
+          invitedGuests?: string;
+          location?: string;
         };
       };
     },
@@ -129,12 +132,99 @@ app.post(
         new Date(event["beginning Time"]).getDay() === new Date().getDay()
     ),
     events: mock.events.filter(
-      (event) => event.untilDate === new Date().toDateString()
+      (event) => event.untilDate === new Date().toDatestring()
     ),
   }); */
-    const newEvent = new Event({ ...req.body.dataToSave, id: Math.random() });
+    const newEvent = new Event({ ...req.body.dataToSave });
     await newEvent.save();
     res.json(await Event.find());
+  }
+);
+
+app.put(
+  "/saveTask",
+  async (
+    req: {
+      body: {
+        id: string;
+        dataToSave: {
+          title: string;
+          description: string;
+          estimatedTime: Date;
+          status: string;
+          priority: string;
+          timeSpent: number;
+          location: string;
+          notificationTime: Date;
+        };
+      };
+    },
+    res
+  ) => {
+    /*mock.tasks.push({...req.body.dataToSave, id:Math.random()});
+   res.json({
+    events: mock.events.filter(
+      (event) =>
+        new Date(event["beginning Time"]).getDay() === new Date().getDay()
+    ),
+    tasks: mock.tasks.filter(
+      (task) => task.untilDate === new Date().toDatestring()
+    ),
+  }); */
+    const editedTask = await Task.findById(req.body.id);
+    if (editedTask === null) res.status(400);
+    else {
+      editedTask.title = req.body.dataToSave.title;
+      editedTask.description = req.body.dataToSave.description;
+      editedTask.estimatedTime = req.body.dataToSave.estimatedTime;
+      editedTask.status = req.body.dataToSave.status;
+      editedTask.priority = req.body.dataToSave.priority;
+      editedTask.timeSpent = req.body.dataToSave.timeSpent;
+      editedTask.location = req.body.dataToSave.location;
+      editedTask.notificationTime = req.body.dataToSave.notificationTime;
+      await editedTask.save();
+    }
+    res.json(editedTask);
+  }
+);
+
+app.put(
+  "/saveEvent",
+  async (
+    req: {
+      body: {
+        id: string;
+        dataToSave: {
+          title: string;
+          description: string;
+          estimatedTime: Date;
+          priority: string;
+          beginningTime: Date;
+          endingTime: Date;
+          color?: string;
+          invitedGuests?: string;
+          location?: string;
+          notificationTime?: Date;
+        };
+      };
+    },
+    res
+  ) => {
+    const editedEvent = await Event.findById(req.body.id);
+    if (editedEvent === null) res.status(400);
+    else {
+      editedEvent.title = req.body.dataToSave.title;
+      editedEvent.description = req.body.dataToSave.description;
+      editedEvent.beginningTime = req.body.dataToSave.beginningTime;
+      editedEvent.endingTime = req.body.dataToSave.endingTime;
+      if (req.body.dataToSave.color)
+        editedEvent.color = req.body.dataToSave.color;
+      editedEvent.location = req.body.dataToSave.location;
+      editedEvent.notificationTime = req.body.dataToSave.notificationTime;
+      editedEvent.invitedGuests = req.body.dataToSave.invitedGuests;
+      await editedEvent.save();
+    }
+    res.json(editedEvent);
   }
 );
 
