@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-//import mock from "./mock.json";
+// import mock from "./mock.json";
 import Task from "./models/taskModel";
 import Event from "./models/eventModel";
 import dotenv from "dotenv";
@@ -36,12 +36,12 @@ mongoose.connect(
 
 app.get("/tasks-all", async (_, res) => {
   // res.json({ tasks: mock.tasks, events: [] });
-  res.json(await Task.find());
+  res.json({ tasks: await Task.find() });
 });
 
 app.get("/events-all", async (_, res) => {
   // res.json({ events: mock.events, tasks: [] });
-  res.json(await Event.find());
+  res.json({ events: await Event.find() });
 });
 
 app.get("/all-today", async (_, res) => {
@@ -60,10 +60,10 @@ app.get("/all-today", async (_, res) => {
     now.getMonth(),
     now.getDate()
   );
-  res.json([
-    ...(await Task.find({ estimatedTime: { $gte: todayBeginnig } })),
-    ...(await Event.find({ beginningTime: { $gte: todayBeginnig } })),
-  ]);
+  res.json({
+    tasks: await Task.find({ estimatedTime: { $gte: todayBeginnig } }),
+    events: await Event.find({ beginningTime: { $gte: todayBeginnig } }),
+  });
 });
 
 app.post(
@@ -234,17 +234,4 @@ app.delete("/tasks/:id", async (req, res) => {
   const task = await Task.findById(req.params.id);
   if (task) await task.delete();
   res.json(await Task.find());
-});
-
-app.delete("/item/:id", async (req, res) => {
-  try {
-    const task = await Task.findById(req.params.id);
-    if (task) await task.delete();
-    res.json(await Task.find());
-  } catch (e) {
-    console.log("so this item is an event......... interesting...");
-  }
-  const event = await Event.findById(req.params.id);
-  if (event) await event.delete();
-  res.json(await Event.find());
 });
