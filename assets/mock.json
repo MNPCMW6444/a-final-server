@@ -1,0 +1,61 @@
+{
+  "events": [
+    {
+      "id": "1",
+      "title": "Launch break",
+      "description": "Eating launch at the dinning room with my best friends :)",
+      "beginningTime": "2022-09-08T12:30:00.045Z",
+      "endingTime": "2022-09-08T13:30:00.045Z",
+      "color": "Blue",
+      "location": "here",
+      "invitedGuests": ["", ""],
+      "notificationTime": "1997-04-28T11:30:00.045Z"
+    },
+    {
+      "id": "2",
+      "title": "Love your team leader",
+      "description": "Say to your team leader how much he is important to you and how much you love him <3",
+      "beginningTime": "2020-01-01T09:00:00.045Z",
+      "endingTime": "2020-01-01T09:30:00.045Z",
+      "color": "Red",
+      "location": "there",
+      "invitedGuests": ["Team Leader"],
+      "notificationTime": "2020-01-01T08:45:00.045Z"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "1",
+      "title": "To praise Shperling",
+      "description": "Tell your team leader that he is the best team leader you've ever had",
+      "estimatedTime": "3d",
+      "status": "Open",
+      "priority": "High",
+      "review": "not yet",
+      "timeSpent": "123",
+      "untilDate": "2022-09-08T23:59:00.0457"
+    },
+    {
+      "id": "2",
+      "title": "To finish this sub-task",
+      "description": "Finish this subtask in your training program",
+      "estimatedTime": "1w",
+      "status": "In Progress",
+      "priority": "Medium",
+      "review": "not yet",
+      "timeSpent": "123",
+      "untilDate": "2020-12-28T21:59:00.0457"
+    },
+    {
+      "id": "3",
+      "title": "Have a break",
+      "description": "Tell your team leader that he is the best team leader you've ever had",
+      "estimatedTime": "0.5h",
+      "status": "Close",
+      "priority": "Low",
+      "review": "The break you took was 30 minutes and 2 seconds, so you have to work 2 more seconds at the end of the day",
+      "timeSpent": "30m 2s",
+      "untilDate": "2020-12-31T23:59:00.045Z"
+    }
+  ]
+}

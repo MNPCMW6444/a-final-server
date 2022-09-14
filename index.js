@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-// import mock from "./mock.json";
+const mock_json_1 = __importDefault(require("./mock.json"));
 const taskModel_1 = __importDefault(require("./models/taskModel"));
 const eventModel_1 = __importDefault(require("./models/eventModel"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -26,6 +26,10 @@ mongoose_1.default.connect("" + process.env.MONGO_URI, {
     if (err)
         return console.error(err);
     console.log("Connected to Main MongoDB");
+});
+app.get("/alldata", async (_, res) => {
+    res.json(mock_json_1.default);
+    //res.json({ tasks: await Task.find() });
 });
 app.get("/tasks-all", async (_, res) => {
     // res.json({ tasks: mock.tasks, events: [] });

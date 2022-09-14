@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-// import mock from "./mock.json";
+import mock from "./mock.json";
 import Task from "./models/taskModel";
 import Event from "./models/eventModel";
 import dotenv from "dotenv";
@@ -33,6 +33,11 @@ mongoose.connect(
     console.log("Connected to Main MongoDB");
   }
 );
+
+app.get("/alldata", async (_, res) => {
+  res.json(mock);
+  //res.json({ tasks: await Task.find() });
+});
 
 app.get("/tasks-all", async (_, res) => {
   // res.json({ tasks: mock.tasks, events: [] });
