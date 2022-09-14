@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const mock_json_1 = __importDefault(require("./mock.json"));
+const mock_json_1 = __importDefault(require("./assets/mock.json"));
 const taskModel_1 = __importDefault(require("./models/taskModel"));
 const eventModel_1 = __importDefault(require("./models/eventModel"));
 const dotenv_1 = __importDefault(require("dotenv"));

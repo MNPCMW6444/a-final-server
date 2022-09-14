@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import mock from "./mock.json";
+import mock from "./assets/mock.json";
 import Task from "./models/taskModel";
 import Event from "./models/eventModel";
 import dotenv from "dotenv";
