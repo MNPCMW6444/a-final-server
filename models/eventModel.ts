@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const eventSchema = new mongoose.Schema(
   {
     id: {
-      type: Number,
+      type: String,
       required: true,
       unique: true,
     },
@@ -28,7 +28,7 @@ const eventSchema = new mongoose.Schema(
       required: true,
     },
     invitedGuests: {
-      type: String,
+      type: [String],
       required: false,
     },
     location: {

@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const taskSchema = new mongoose_1.default.Schema({
     id: {
-        type: Number,
+        type: String,
         required: true,
         unique: true,
     },
@@ -19,7 +19,7 @@ const taskSchema = new mongoose_1.default.Schema({
         required: true,
     },
     estimatedTime: {
-        type: Date,
+        type: String,
         required: true,
     },
     status: { type: String, required: true },

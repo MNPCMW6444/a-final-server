@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const eventSchema = new mongoose_1.default.Schema({
     id: {
-        type: Number,
+        type: String,
         required: true,
         unique: true,
     },
@@ -31,7 +31,7 @@ const eventSchema = new mongoose_1.default.Schema({
         required: true,
     },
     invitedGuests: {
-        type: String,
+        type: [String],
         required: false,
     },
     location: {

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const taskSchema = new mongoose.Schema(
   {
     id: {
-      type: Number,
+      type: String,
       required: true,
       unique: true,
     },
@@ -16,7 +16,7 @@ const taskSchema = new mongoose.Schema(
       required: true,
     },
     estimatedTime: {
-      type: Date,
+      type: String,
       required: true,
     },
     status: { type: String, required: true },
