@@ -27,7 +27,7 @@ const taskSchema = new mongoose.Schema(
     },
     review: { type: String, required: false },
     timeSpent: {
-      type: Number,
+      type: String,
       required: false,
     },
     location: { type: String, required: false },

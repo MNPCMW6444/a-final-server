@@ -30,7 +30,7 @@ const taskSchema = new mongoose_1.default.Schema({
     },
     review: { type: String, required: false },
     timeSpent: {
-        type: Number,
+        type: String,
         required: false,
     },
     location: { type: String, required: false },
