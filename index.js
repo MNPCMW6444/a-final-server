@@ -52,12 +52,42 @@ app.put("/editTask/:id", async (req, res) => {
     res.json(resAved);
 });
 app.post("/createTask", async (req, res) => {
-    const newTask = new taskModel_1.default(req.body.newItem);
+    const title = req.body.newItem.title;
+    const description = req.body.newItem.description;
+    const estimatedTime = req.body.newItem.estimatedTime;
+    const status = req.body.newItem.status;
+    const priority = req.body.newItem.priority;
+    const id = (Math.random() * 10000) / 10000 + "";
+    const newTask = new taskModel_1.default({
+        title,
+        description,
+        estimatedTime,
+        status,
+        priority,
+        id,
+    });
     const resAved = await newTask.save();
     res.json(resAved);
 });
 app.post("/createEvent", async (req, res) => {
-    const newTask = new eventModel_1.default(req.body.newItem);
+    const title = req.body.newItem.title;
+    const description = req.body.newItem.description;
+    const beginningTime = new Date(req.body.newItem.beginningTime);
+    const endingTime = new Date(req.body.newItem.endingTime);
+    const color = req.body.newItem.color;
+    const location = req.body.newItem.location;
+    const notificationTime = new Date(req.body.newItem.notificationTime);
+    const id = (Math.random() * 10000) / 10000 + "";
+    const newTask = new eventModel_1.default({
+        title,
+        description,
+        beginningTime,
+        endingTime,
+        color,
+        location,
+        notificationTime,
+        id,
+    });
     const resAved = await newTask.save();
     res.json(resAved);
 });
