@@ -51,3 +51,13 @@ app.put("/editTask/:id", async (req, res) => {
     const resAved = oldTask && (await oldTask.save());
     res.json(resAved);
 });
+app.post("/createTask", async (req, res) => {
+    const newTask = new taskModel_1.default(req.body.newItem);
+    const resAved = await newTask.save();
+    res.json(resAved);
+});
+app.post("/createEvent", async (req, res) => {
+    const newTask = new eventModel_1.default(req.body.newItem);
+    const resAved = await newTask.save();
+    res.json(resAved);
+});
