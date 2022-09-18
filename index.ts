@@ -100,3 +100,21 @@ app.post("/createEvent", async (req, res) => {
   const resAved = await newTask.save();
   res.json(resAved);
 });
+
+app.delete("/deleteTask/:id", async (req, res) => {
+  const id = req.params.id;
+
+  const taskToDelete = Task.findById(id);
+
+  taskToDelete.deleteOne();
+
+  res.json({});
+});
+
+app.delete("/deleteEvent/:id", async (req, res) => {
+  const id = req.params.id;
+
+  await Event.deleteOne({ _id: id });
+
+  res.json({});
+});
