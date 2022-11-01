@@ -1,25 +1,41 @@
-import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
+import dotenv from "dotenv";
+import express from "express";
+import { ApolloServer } from "apollo-server-express";
 
-// The GraphQL schema
-const typeDefs = `#graphql
-  type Query {
-    hello: String
-  }
-`;
+import mongoose from "mongoose";
 
-// A map of functions which return data for the schema.
-const resolvers = {
-  Query: {
-    hello: () => "world",
-  },
-};
+import "./utils/db";
+import schema from "./schema";
+
+dotenv.config();
+
+const app = express();
 
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+  schema,
+  cors: true,
+  playground: process.env.NODE_ENV === "development" ? true : false,
+  introspection: true,
+  tracing: true,
+  path: "/",
 });
 
-startStandaloneServer(server).then(({ url }) =>
-  console.log(`🚀 Server ready at ${url}`)
-);
+server.applyMiddleware({
+  app,
+  path: "/",
+  cors: true,
+  onHealthCheck: () =>
+    // eslint-disable-next-line no-undef
+    new Promise((resolve, reject) => {
+      if (mongoose.connection.readyState > 0) {
+        resolve();
+      } else {
+        reject();
+      }
+    }),
+});
+
+app.listen({ port: process.env.PORT }, () => {
+  console.log(`🚀 Server listening on port ${process.env.PORT}`);
+  console.log(`😷 Health checks available at ${process.env.HEALTH_ENDPOINT}`);
+});
