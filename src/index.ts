@@ -12,7 +12,7 @@ const schema = makeExecutableSchema({
   resolvers,
 });
 
-mongoose.connect("mongodb://localhost/test");
+mongoose.connect("mongodb://localhost:27017/finalProject");
 
 const Cat = mongoose.model("Cat", { name: String });
 
