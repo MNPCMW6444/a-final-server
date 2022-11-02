@@ -2,8 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = `
 
-
-
 type Event {
   title: String
   description: String
@@ -13,11 +11,6 @@ type Event {
   invitedGuests: [String]
   location: String
   notificationTime: String
-}
-
-
-type MutationEvents {
-  createEvents(name: String!): Event!
 }
 
 type Task {
@@ -33,12 +26,19 @@ type Task {
   notificationTime: String
 }
 
+
 type Query {
   allTasks: [Task!]!
   allEvents: [Event!]!
 }
 
-type MutationTasks {
-  createTask(name: String!): Task!
+type Mutation {
+  editEvent : Event!
+  editTask : Task!
+  createTask : Task!
+  createEvent : Event!
+  deleteTask : Task!
+  deleteEvent : Event!
 }
+
 `;

@@ -1,7 +1,5 @@
 export default `
 
-
-
 type Event {
   title: String
   description: String
@@ -11,11 +9,6 @@ type Event {
   invitedGuests: [String]
   location: String
   notificationTime: String
-}
-
-
-type MutationEvents {
-  createEvents(name: String!): Event!
 }
 
 type Task {
@@ -31,12 +24,19 @@ type Task {
   notificationTime: String
 }
 
+
 type Query {
-  allTasks: [Task!]!
-  allEvents: [Event!]!
+  allTasks: [Task]
+  allEvents: [Event]
 }
 
-type MutationTasks {
-  createTask(name: String!): Task!
+type Mutation {
+  editEvent(event: Event) : Event
+  editTask(task: Task) : Task
+  createTask(task: Task) : Task
+  createEvent(event: Event) : Event
+  deleteTask(_id: String) : Task
+  deleteEvent(_id: String): Event
 }
+
 `;
