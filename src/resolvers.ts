@@ -22,24 +22,14 @@ export default {
   },
   Mutation: {
     editEvent: async (args: any) => {
-      const oldEvent = await Event.findById(req.params.id);
-      if (!req.body.newItem.title)
-        return res.status(400).json({ erroMsg: "title is missing" });
-      if (!req.body.newItem.description)
-        return res.status(400).json({ erroMsg: "description is missing" });
-      if (!req.body.newItem.beginningTime)
-        return res.status(400).json({ erroMsg: "Beginning Time is missing" });
-      if (!req.body.newItem.endingTime)
-        return res.status(400).json({ erroMsg: "Ending Time is missing" });
-      if (!req.body.newItem.color)
-        return res.status(400).json({ erroMsg: "color is missing" });
-      if (!req.body.newItem.location)
-        return res.status(400).json({ erroMsg: "location is missing" });
-      if (!req.body.newItem.notificationTime)
-        return res
-          .status(400)
-          .json({ erroMsg: "Notification Time is missing" });
-
+      const oldEvent = await Event.findById(args.id);
+      if (!args.newItem.title) return null;
+      if (!args.newItem.description) return null;
+      if (!args.newItem.beginningTime) return null;
+      if (!args.newItem.endingTime) return null;
+      if (!args.newItem.color) return null;
+      if (!args.newItem.location) return null;
+      if (!args.newItem.notificationTime) return null;
       const colorMap = new Map();
       colorMap.set("🔴", "Red");
       colorMap.set("🟠", "Orange");
@@ -50,16 +40,14 @@ export default {
       colorMap.set("⚫️", "Black");
       colorMap.set("⚪️", "White");
       colorMap.set("🟤", "Brown");
-
-      const title = req.body.newItem.title;
-      const description = req.body.newItem.description;
-      const beginningTime = new Date(req.body.newItem.beginningTime);
-      const endingTime = new Date(req.body.newItem.endingTime);
-      const color = colorMap.get(req.body.newItem.color);
-      const location = req.body.newItem.location;
-      const notificationTime = new Date(req.body.newItem.notificationTime);
+      const title = args.newItem.title;
+      const description = args.newItem.description;
+      const beginningTime = new Date(args.newItem.beginningTime);
+      const endingTime = new Date(args.newItem.endingTime);
+      const color = colorMap.get(args.newItem.color);
+      const location = args.newItem.location;
+      const notificationTime = new Date(args.newItem.notificationTime);
       const id = (Math.random() * 10000) / 10000 + "";
-
       if (oldEvent) oldEvent.title = title;
       if (oldEvent) oldEvent.description = description;
       if (oldEvent) oldEvent.beginningTime = beginningTime;
@@ -68,68 +56,42 @@ export default {
       if (oldEvent) oldEvent.location = location;
       if (oldEvent) oldEvent.notificationTime = notificationTime;
       if (oldEvent) oldEvent.id = id;
-
       const resAved = oldEvent && (await oldEvent.save());
-      res.json(resAved);
+      return resAved;
     },
     editTask: async (args: any) => {
-      const oldTask = await Task.findById(req.params.id);
-
-      if (!req.body.newItem.title)
-        return res.status(400).json({ erroMsg: "title is missing" });
-      if (!req.body.newItem.description)
-        return res.status(400).json({ erroMsg: "description is missing" });
-      if (!req.body.newItem.estimatedTime)
-        return res.status(400).json({ erroMsg: "Estimated Time is missing" });
-      if (!req.body.newItem.status)
-        return res.status(400).json({ erroMsg: "status is missing" });
-      if (!req.body.newItem.priority)
-        return res.status(400).json({ erroMsg: "priority is missing" });
-
-      const title = req.body.newItem.title;
-
-      const description = req.body.newItem.description;
-
-      const estimatedTime = req.body.newItem.estimatedTime;
-
-      const status = req.body.newItem.status;
-
-      const priority = req.body.newItem.priority;
-
+      const oldTask = await Task.findById(args.id);
+      if (!args.newItem.title) return null;
+      if (!args.newItem.description) return null;
+      if (!args.newItem.estimatedTime) return null;
+      if (!args.newItem.status) return null;
+      if (!args.newItem.priority) return null;
+      const title = args.newItem.title;
+      const description = args.newItem.description;
+      const estimatedTime = args.newItem.estimatedTime;
+      const status = args.newItem.status;
+      const priority = args.newItem.priority;
       const id = (Math.random() * 10000) / 10000 + "";
-
       if (oldTask) oldTask.title = title;
       if (oldTask) oldTask.description = description;
       if (oldTask) oldTask.estimatedTime = estimatedTime;
       if (oldTask) oldTask.status = status;
       if (oldTask) oldTask.priority = priority;
       if (oldTask) oldTask.id = id;
-
       const resAved = oldTask && (await oldTask.save());
-      res.json(resAved);
+      return resAved;
     },
     createTask: async (args: any) => {
-      if (!req.body.newItem.title)
-        return res.status(400).json({ erroMsg: "title is missing" });
-      if (!req.body.newItem.description)
-        return res.status(400).json({ erroMsg: "description is missing" });
-      if (!req.body.newItem.estimatedTime)
-        return res.status(400).json({ erroMsg: "Estimated Time is missing" });
-      if (!req.body.newItem.status)
-        return res.status(400).json({ erroMsg: "status is missing" });
-      if (!req.body.newItem.priority)
-        return res.status(400).json({ erroMsg: "priority is missing" });
-
-      const title = req.body.newItem.title;
-
-      const description = req.body.newItem.description;
-
-      const estimatedTime = req.body.newItem.estimatedTime;
-
-      const status = req.body.newItem.status;
-
-      const priority = req.body.newItem.priority;
-
+      if (!args.newItem.title) return null;
+      if (!args.newItem.description) return null;
+      if (!args.newItem.estimatedTime) return null;
+      if (!args.newItem.status) return null;
+      if (!args.newItem.priority) return null;
+      const title = args.newItem.title;
+      const description = args.newItem.description;
+      const estimatedTime = args.newItem.estimatedTime;
+      const status = args.newItem.status;
+      const priority = args.newItem.priority;
       const id = (Math.random() * 10000) / 10000 + "";
       const newTask = new Task({
         title,
@@ -140,26 +102,16 @@ export default {
         id,
       });
       const resAved = await newTask.save();
-      res.json(resAved);
+      return resAved;
     },
     createEvent: async (args: any) => {
-      if (!req.body.newItem.title)
-        return res.status(400).json({ erroMsg: "title is missing" });
-      if (!req.body.newItem.description)
-        return res.status(400).json({ erroMsg: "description is missing" });
-      if (!req.body.newItem.beginningTime)
-        return res.status(400).json({ erroMsg: "Beginning Time is missing" });
-      if (!req.body.newItem.endingTime)
-        return res.status(400).json({ erroMsg: "Ending Time is missing" });
-      if (!req.body.newItem.color)
-        return res.status(400).json({ erroMsg: "color is missing" });
-      if (!req.body.newItem.location)
-        return res.status(400).json({ erroMsg: "location is missing" });
-      if (!req.body.newItem.notificationTime)
-        return res
-          .status(400)
-          .json({ erroMsg: "Notification Time is missing" });
-
+      if (!args.newItem.title) return null;
+      if (!args.newItem.description) return null;
+      if (!args.newItem.beginningTime) return null;
+      if (!args.newItem.endingTime) return null;
+      if (!args.newItem.color) return null;
+      if (!args.newItem.location) return null;
+      if (!args.newItem.notificationTime) return null;
       const colorMap = new Map();
       colorMap.set("🔴", "Red");
       colorMap.set("🟠", "Orange");
@@ -170,14 +122,13 @@ export default {
       colorMap.set("⚫️", "Black");
       colorMap.set("⚪️", "White");
       colorMap.set("🟤", "Brown");
-
-      const title = req.body.newItem.title;
-      const description = req.body.newItem.description;
-      const beginningTime = new Date(req.body.newItem.beginningTime);
-      const endingTime = new Date(req.body.newItem.endingTime);
-      const color = colorMap.get(req.body.newItem.color);
-      const location = req.body.newItem.location;
-      const notificationTime = new Date(req.body.newItem.notificationTime);
+      const title = args.newItem.title;
+      const description = args.newItem.description;
+      const beginningTime = new Date(args.newItem.beginningTime);
+      const endingTime = new Date(args.newItem.endingTime);
+      const color = colorMap.get(args.newItem.color);
+      const location = args.newItem.location;
+      const notificationTime = new Date(args.newItem.notificationTime);
       const id = (Math.random() * 10000) / 10000 + "";
       const newTask = new Event({
         title,
@@ -190,21 +141,17 @@ export default {
         id,
       });
       const resAved = await newTask.save();
-      res.json(resAved);
+      return resAved;
     },
     deleteTask: async (args: any) => {
-      const id = req.params.id;
-
+      const id = args.id;
       await Task.deleteOne({ _id: id });
-
-      res.json({});
+      return {};
     },
     deleteEvent: async (args: any) => {
-      const id = req.params.id;
-
+      const id = args.id;
       await Event.deleteOne({ _id: id });
-
-      res.json({});
+      return {};
     },
   },
 };
