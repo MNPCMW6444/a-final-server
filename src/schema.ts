@@ -1,16 +1,16 @@
 export default `
 
-scalar DateTime
+
 
 type Event {
   title: String
   description: String
-  beginningTime: DateTime
-  endingTime: DateTime
+  beginningTime: String
+  endingTime: String
   color: String
   invitedGuests: [String]
   location: String
-  notificationTime: DateTime
+  notificationTime: String
 }
 
 
@@ -24,11 +24,11 @@ type Task {
   estimatedTime: String
   status: String
   priority: String
-  untilDate: DateTime
+  untilDate: String
   review: String
   timeSpent: String
   location: String
-  notificationTime: DateTime
+  notificationTime: String
 }
 
 type Query {
