@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import cors from "cors";
 import { graphiqlExpress, graphqlExpress } from "apollo-server-express";
 import { makeExecutableSchema } from "graphql-tools";
 import mongoose from "mongoose";
@@ -8,7 +9,6 @@ import typeDefs from "./schema";
 import resolvers from "./resolvers";
 
 import Task from "./models/taskModel";
-
 import Event from "./models/eventModel";
 
 const schema = makeExecutableSchema({
@@ -21,6 +21,13 @@ mongoose.connect("mongodb://localhost:27017/finalProject");
 const PORT = 4000;
 
 const app = express();
+
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://finalproject.flexboxtorchy.com"],
+    credentials: true,
+  })
+);
 
 app.use(
   "/graphql",

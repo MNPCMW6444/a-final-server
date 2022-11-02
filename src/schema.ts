@@ -1,21 +1,18 @@
 export default `
 
-scalar Date
+scalar DateTime
 
 type Event {
   title: String
   description: String
-  beginningTime: Date
-  endingTime: Date
+  beginningTime: DateTime
+  endingTime: DateTime
   color: String
   invitedGuests: [String]
   location: String
-  notificationTime: Date
+  notificationTime: DateTime
 }
 
-type QueryEvents {
-  allEvents: [Event!]!
-}
 
 type MutationEvents {
   createEvents(name: String!): Event!
@@ -27,15 +24,16 @@ type Task {
   estimatedTime: String
   status: String
   priority: String
-  untilDate: Date
+  untilDate: DateTime
   review: String
   timeSpent: String
   location: String
-  notificationTime: Date
+  notificationTime: DateTime
 }
 
 type Query {
   allTasks: [Task!]!
+  allEvents: [Event!]!
 }
 
 type MutationTasks {
