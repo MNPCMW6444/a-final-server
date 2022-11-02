@@ -1,41 +1,44 @@
 "use strict";
-exports.__esModule = true;
-var mongoose_1 = require("mongoose");
-var taskSchema = new mongoose_1["default"].Schema({
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = __importDefault(require("mongoose"));
+const taskSchema = new mongoose_1.default.Schema({
     id: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     title: {
         type: String,
-        required: true
+        required: true,
     },
     description: {
         type: String,
-        required: true
+        required: true,
     },
     estimatedTime: {
         type: String,
-        required: true
+        required: true,
     },
     status: { type: String, required: true },
     priority: { type: String, required: true },
     untilDate: {
         type: Date,
-        required: false
+        required: false,
     },
     review: { type: String, required: false },
     timeSpent: {
         type: String,
-        required: false
+        required: false,
     },
     location: { type: String, required: false },
     notificationTime: {
         type: Date,
-        required: false
-    }
+        required: false,
+    },
 }, {
-    timestamps: true
+    timestamps: true,
 });
-exports["default"] = mongoose_1["default"].model("task", taskSchema);
+exports.default = mongoose_1.default.model("task", taskSchema);

@@ -1,3 +1,18 @@
 "use strict";
-exports.__esModule = true;
-exports["default"] = "\n\ntype Cat {\n  _id: String!\n  name: String!\n}\n\ntype Query {\n  allCats: [Cat!]!\n}\n\ntype Mutation {\n  createCat(name: String!): Cat!\n}\n\n";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = `
+
+type Cat {
+  _id: String!
+  name: String!
+}
+
+type Query {
+  allCats: [Cat!]!
+}
+
+type Mutation {
+  createCat(name: String!): Cat!
+}
+
+`;
