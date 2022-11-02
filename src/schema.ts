@@ -24,19 +24,17 @@ type Task {
   notificationTime: String
 }
 
-
 type Query {
   allTasks: [Task]
   allEvents: [Event]
 }
 
 type Mutation {
-  editEvent(event: Event) : Event
-  editTask(task: Task) : Task
-  createTask(task: Task) : Task
-  createEvent(event: Event) : Event
-  deleteTask(_id: String) : Task
-  deleteEvent(_id: String): Event
+  editEvent: Event
+  editTask: Task
+  createTask: Task
+  createEvent: Event
+  deleteTask: Task
+  deleteEvent: Event
 }
-
 `;
