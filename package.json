@@ -16,16 +16,7 @@
   "author": "Michael Nusair",
   "license": "ISC",
   "bugs": {},
-  "dependencies": {
-    "apollo-server-express": "^1.0.5",
-    "body-parser": "^1.17.2",
-    "cors": "^2.8.5",
-    "express": "^4.15.3",
-    "graphql": "^0.10.5",
-    "graphql-tools": "^1.1.0",
-    "mongoose": "^6.7.0",
-    "ts-node": "^10.9.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/body-parser": "^1.19.2",
     "@types/cors": "^2.8.12",
