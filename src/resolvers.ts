@@ -155,13 +155,33 @@ export default {
     },
   },
   Subscription: {
-    hello: {
+    taskAdded: {
       subscribe: async function* () {
         for await (const word of ["Hello", "Bonjour", "Ciao"]) {
           yield { hello: word };
         }
       },
     },
-    asdasdas,
+    eventAdded: {
+      subscribe: async function* () {
+        for await (const word of ["Hello", "Bonjour", "Ciao"]) {
+          yield { hello: word };
+        }
+      },
+    },
+    taskEdited: {
+      subscribe: async function* () {
+        for await (const word of ["Hello", "Bonjour", "Ciao"]) {
+          yield { hello: word };
+        }
+      },
+    },
+    eventEdited: {
+      subscribe: async function* () {
+        for await (const word of ["Hello", "Bonjour", "Ciao"]) {
+          yield { hello: word };
+        }
+      },
+    },
   },
 };
