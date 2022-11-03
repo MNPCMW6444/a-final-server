@@ -1,8 +1,3 @@
-import express from "express";
-import bodyParser from "body-parser";
-import cors from "cors";
-import { graphiqlExpress, graphqlExpress } from "apollo-server-express";
-import { makeExecutableSchema } from "graphql-tools";
 import mongoose from "mongoose";
 
 import typeDefs from "./schema";
@@ -10,31 +5,18 @@ import resolvers from "./resolvers";
 
 import Task from "./models/taskModel";
 import Event from "./models/eventModel";
-
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers,
-});
+import { ApolloServer } from "apollo-server-express";
+import { startStandaloneServer } from "@apollo/server/standalone";
 
 mongoose.connect("mongodb://localhost:27017/finalProject");
 
 const PORT = 4000;
 
-const app = express();
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
 
-app.use(
-  cors({
-    origin: ["http://localhost:3000", "https://finalproject.flexboxtorchy.com"],
-    credentials: true,
-  })
-);
-
-app.use(
-  "/graphql",
-  bodyParser.json(),
-  graphqlExpress({ schema, context: { Task, Event } })
-);
-
-app.use("/graphiql", graphiqlExpress({ endpointURL: "/graphql" }));
-
-app.listen(PORT);
+startStandaloneServer(server, {
+  listen: { port: PORT },
+}).then((res) => console.log("Server up on " + res.url));
