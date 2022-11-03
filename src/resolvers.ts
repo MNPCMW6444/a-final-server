@@ -154,4 +154,14 @@ export default {
       return {};
     },
   },
+  Subscription: {
+    hello: {
+      subscribe: async function* () {
+        for await (const word of ["Hello", "Bonjour", "Ciao"]) {
+          yield { hello: word };
+        }
+      },
+    },
+    asdasdas,
+  },
 };

@@ -37,4 +37,12 @@ type Mutation {
   deleteTask: Task
   deleteEvent: Event
 }
+
+type Subscription {
+  taskAdded: Task
+  eventAdded: Event
+  taskEdited: Task
+  eventEdited: Event
+}
+
 `;
