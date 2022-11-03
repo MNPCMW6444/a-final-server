@@ -5,7 +5,8 @@ import resolvers from "./resolvers";
 
 import Task from "./models/taskModel";
 import Event from "./models/eventModel";
-import { ApolloServer } from "apollo-server-express";
+
+import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 
 mongoose.connect("mongodb://localhost:27017/finalProject");
