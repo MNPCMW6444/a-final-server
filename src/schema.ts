@@ -1,14 +1,16 @@
 export default `#graphql
 
+scalar Date
+
 type Event {
   title: String
   description: String
-  beginningTime: String
-  endingTime: String
+  beginningTime: Date
+  endingTime: Date
   color: String
   invitedGuests: [String]
   location: String
-  notificationTime: String
+  notificationTime: Date
 }
 
 type Task {
@@ -17,11 +19,11 @@ type Task {
   estimatedTime: String
   status: String
   priority: String
-  untilDate: String
+  untilDate: Date
   review: String
   timeSpent: String
   location: String
-  notificationTime: String
+  notificationTime: Date
 }
 
 type Query {
