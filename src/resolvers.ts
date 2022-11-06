@@ -1,5 +1,8 @@
 import Task from "./models/taskModel";
 import Event from "./models/eventModel";
+import { PubSub } from "graphql-subscriptions";
+
+const pubsub = new PubSub();
 
 export default {
   Query: {
@@ -57,6 +60,11 @@ export default {
       if (oldEvent) oldEvent.notificationTime = notificationTime;
       if (oldEvent) oldEvent.id = id;
       const resAved = oldEvent && (await oldEvent.save());
+
+      pubsub.publish("changes", {
+        item: resAved,
+      });
+
       return resAved;
     },
     editTask: async (args: any) => {
@@ -155,32 +163,9 @@ export default {
     },
   },
   Subscription: {
-    taskAdded: {
-      subscribe: async function* () {
-        for await (const word of ["Hello", "Bonjour", "Ciao"]) {
-          yield { hello: word };
-        }
-      },
-    },
-    eventAdded: {
-      subscribe: async function* () {
-        for await (const word of ["Hello", "Bonjour", "Ciao"]) {
-          yield { hello: word };
-        }
-      },
-    },
-    taskEdited: {
-      subscribe: async function* () {
-        for await (const word of ["Hello", "Bonjour", "Ciao"]) {
-          yield { hello: word };
-        }
-      },
-    },
-    eventEdited: {
-      subscribe: async function* () {
-        for await (const word of ["Hello", "Bonjour", "Ciao"]) {
-          yield { hello: word };
-        }
+    user: {
+      subscribe() {
+        return pubsub.asyncIterator("changes");
       },
     },
   },
