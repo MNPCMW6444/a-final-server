@@ -61,8 +61,8 @@ export default {
       if (oldEvent) oldEvent.id = id;
       const resAved = oldEvent && (await oldEvent.save());
 
-      pubsub.publish("changes", {
-        item: resAved,
+      pubsub.publish("newEvent", {
+        newEvent: resAved,
       });
 
       return resAved;
@@ -87,6 +87,11 @@ export default {
       if (oldTask) oldTask.priority = priority;
       if (oldTask) oldTask.id = id;
       const resAved = oldTask && (await oldTask.save());
+
+      pubsub.publish("newTask", {
+        newTask: resAved,
+      });
+
       return resAved;
     },
     createTask: async (args: any) => {
@@ -110,6 +115,11 @@ export default {
         id,
       });
       const resAved = await newTask.save();
+
+      pubsub.publish("newTask", {
+        newTask: resAved,
+      });
+
       return resAved;
     },
     createEvent: async (args: any) => {
@@ -149,16 +159,31 @@ export default {
         id,
       });
       const resAved = await newTask.save();
+
+      pubsub.publish("newEvent", {
+        newEvent: resAved,
+      });
+
       return resAved;
     },
     deleteTask: async (args: any) => {
       const id = args.id;
       await Task.deleteOne({ _id: id });
+
+      pubsub.publish("deletedTask", {
+        deletedEvent: id,
+      });
+
       return {};
     },
     deleteEvent: async (args: any) => {
       const id = args.id;
       await Event.deleteOne({ _id: id });
+
+      pubsub.publish("deletedEvent", {
+        deletedEvent: id,
+      });
+
       return {};
     },
   },
