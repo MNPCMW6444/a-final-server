@@ -25,7 +25,7 @@ export default {
   },
   Mutation: {
     editEvent: async (args: any) => {
-      const oldEvent = await Event.findById(args.id);
+      const oldEvent = await Event.findById(args.newItem._id);
       if (!args.newItem.title) return null;
       if (!args.newItem.description) return null;
       if (!args.newItem.beginningTime) return null;
@@ -50,7 +50,7 @@ export default {
       const color = colorMap.get(args.newItem.color);
       const location = args.newItem.location;
       const notificationTime = new Date(args.newItem.notificationTime);
-      const id = (Math.random() * 10000) / 10000 + "";
+      const _id = (Math.random() * 10000) / 10000 + "";
       if (oldEvent) oldEvent.title = title;
       if (oldEvent) oldEvent.description = description;
       if (oldEvent) oldEvent.beginningTime = beginningTime;
@@ -58,7 +58,6 @@ export default {
       if (oldEvent) oldEvent.color = color;
       if (oldEvent) oldEvent.location = location;
       if (oldEvent) oldEvent.notificationTime = notificationTime;
-      if (oldEvent) oldEvent.id = id;
       const resAved = oldEvent && (await oldEvent.save());
 
       pubsub.publish("newEvent", {
@@ -68,7 +67,7 @@ export default {
       return resAved;
     },
     editTask: async (args: any) => {
-      const oldTask = await Task.findById(args.id);
+      const oldTask = await Task.findById(args._id);
       if (!args.newItem.title) return null;
       if (!args.newItem.description) return null;
       if (!args.newItem.estimatedTime) return null;
@@ -79,13 +78,13 @@ export default {
       const estimatedTime = args.newItem.estimatedTime;
       const status = args.newItem.status;
       const priority = args.newItem.priority;
-      const id = (Math.random() * 10000) / 10000 + "";
+      const _id = (Math.random() * 10000) / 10000 + "";
       if (oldTask) oldTask.title = title;
       if (oldTask) oldTask.description = description;
       if (oldTask) oldTask.estimatedTime = estimatedTime;
       if (oldTask) oldTask.status = status;
       if (oldTask) oldTask.priority = priority;
-      if (oldTask) oldTask.id = id;
+      if (oldTask) oldTask._id = _id;
       const resAved = oldTask && (await oldTask.save());
 
       pubsub.publish("newTask", {
@@ -105,14 +104,14 @@ export default {
       const estimatedTime = args.newItem.estimatedTime;
       const status = args.newItem.status;
       const priority = args.newItem.priority;
-      const id = (Math.random() * 10000) / 10000 + "";
+      const _id = (Math.random() * 10000) / 10000 + "";
       const newTask = new Task({
         title,
         description,
         estimatedTime,
         status,
         priority,
-        id,
+        _id,
       });
       const resAved = await newTask.save();
 
@@ -147,7 +146,7 @@ export default {
       const color = colorMap.get(args.newItem.color);
       const location = args.newItem.location;
       const notificationTime = new Date(args.newItem.notificationTime);
-      const id = (Math.random() * 10000) / 10000 + "";
+      const _id = (Math.random() * 10000) / 10000 + "";
       const newTask = new Event({
         title,
         description,
@@ -156,7 +155,7 @@ export default {
         color,
         location,
         notificationTime,
-        id,
+        _id,
       });
       const resAved = await newTask.save();
 
@@ -167,21 +166,21 @@ export default {
       return resAved;
     },
     deleteTask: async (args: any) => {
-      const id = args.id;
-      await Task.deleteOne({ _id: id });
+      const _id = args._id;
+      await Task.deleteOne({ _id: _id });
 
       pubsub.publish("deletedTask", {
-        deletedEvent: id,
+        deletedEvent: _id,
       });
 
       return {};
     },
     deleteEvent: async (args: any) => {
-      const id = args.id;
-      await Event.deleteOne({ _id: id });
+      const _id = args._id;
+      await Event.deleteOne({ _id: _id });
 
       pubsub.publish("deletedEvent", {
-        deletedEvent: id,
+        deletedEvent: _id,
       });
 
       return {};

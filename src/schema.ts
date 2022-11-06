@@ -3,6 +3,7 @@ export default `#graphql
 scalar Date
 
 type Event {
+  _id: String
   title: String
   description: String
   beginningTime: Date
@@ -14,6 +15,7 @@ type Event {
 }
 
 type Task {
+  _id: String
   title: String
   description: String
   estimatedTime: String
