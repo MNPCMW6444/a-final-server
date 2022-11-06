@@ -41,10 +41,10 @@ type Mutation {
 }
 
 type Subscription {
-  taskAdded: Task
-  eventAdded: Event
-  taskEdited: Task
-  eventEdited: Event
+  newEvent: Event
+  newTask: Task
+  deletedEvent: String
+  deletedTask: String
 }
 
 `;

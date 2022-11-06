@@ -163,9 +163,24 @@ export default {
     },
   },
   Subscription: {
-    user: {
+    newEvent: {
       subscribe() {
-        return pubsub.asyncIterator("changes");
+        return pubsub.asyncIterator("newEvent");
+      },
+    },
+    newTask: {
+      subscribe() {
+        return pubsub.asyncIterator("newTask");
+      },
+    },
+    deletedEvent: {
+      subscribe() {
+        return pubsub.asyncIterator("deletedEvent");
+      },
+    },
+    deletedTask: {
+      subscribe() {
+        return pubsub.asyncIterator("deletedTask");
       },
     },
   },
