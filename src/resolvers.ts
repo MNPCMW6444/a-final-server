@@ -166,21 +166,21 @@ export default {
       return resAved;
     },
     deleteTask: async (args: any) => {
-      const _id = args._id;
-      await Task.deleteOne({ _id: _id });
+      const id = args.id;
+      await Task.deleteOne({ _id: id });
 
       pubsub.publish("deletedTask", {
-        deletedEvent: _id,
+        deletedEvent: id,
       });
 
       return {};
     },
     deleteEvent: async (args: any) => {
-      const _id = args._id;
-      await Event.deleteOne({ _id: _id });
+      const id = args.id;
+      await Event.deleteOne({ _id: id });
 
       pubsub.publish("deletedEvent", {
-        deletedEvent: _id,
+        deletedEvent: id,
       });
 
       return {};
