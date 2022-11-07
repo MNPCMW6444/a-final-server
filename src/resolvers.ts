@@ -5,6 +5,17 @@ import { Event, Task } from "./types/index";
 
 const pubsub = new PubSub();
 
+const colorMap = new Map();
+colorMap.set("🔴", "Red");
+colorMap.set("🟠", "Orange");
+colorMap.set("🟡", "Yellow");
+colorMap.set("🟢", "Green");
+colorMap.set("🔵", "Blue");
+colorMap.set("🟣", "Purple");
+colorMap.set("⚫️", "Black");
+colorMap.set("⚪️", "White");
+colorMap.set("🟤", "Brown");
+
 export default {
   Query: {
     allTasks: async () => {
@@ -26,23 +37,13 @@ export default {
     editEvent: async (_: undefined, { newItem }: { newItem: Event }) => {
       const oldEvent = await EventModel.findById(newItem._id);
 
-      const colorMap = new Map();
-      colorMap.set("🔴", "Red");
-      colorMap.set("🟠", "Orange");
-      colorMap.set("🟡", "Yellow");
-      colorMap.set("🟢", "Green");
-      colorMap.set("🔵", "Blue");
-      colorMap.set("🟣", "Purple");
-      colorMap.set("⚫️", "Black");
-      colorMap.set("⚪️", "White");
-      colorMap.set("🟤", "Brown");
       const title = newItem.title;
       const description = newItem.description;
       const beginningTime = new Date(newItem.beginningTime);
       const endingTime = new Date(newItem.endingTime);
       const color = colorMap.get(newItem.color);
       const location = newItem.location;
-      const notificationTime = new Date(newItem.notificationTime);
+      const notificationTime = new Date(newItem.notificationTime + "");
       if (oldEvent) oldEvent.title = title;
       if (oldEvent) oldEvent.description = description;
       if (oldEvent) oldEvent.beginningTime = beginningTime;
@@ -101,23 +102,13 @@ export default {
       return resAved;
     },
     createEvent: async (_: undefined, { newItem }: { newItem: Event }) => {
-      const colorMap = new Map();
-      colorMap.set("🔴", "Red");
-      colorMap.set("🟠", "Orange");
-      colorMap.set("🟡", "Yellow");
-      colorMap.set("🟢", "Green");
-      colorMap.set("🔵", "Blue");
-      colorMap.set("🟣", "Purple");
-      colorMap.set("⚫️", "Black");
-      colorMap.set("⚪️", "White");
-      colorMap.set("🟤", "Brown");
       const title = newItem.title;
       const description = newItem.description;
       const beginningTime = new Date(newItem.beginningTime);
       const endingTime = new Date(newItem.endingTime);
       const color = colorMap.get(newItem.color);
       const location = newItem.location;
-      const notificationTime = new Date(newItem.notificationTime);
+      const notificationTime = new Date(newItem.notificationTime + "");
       const newTask = new EventModel({
         title,
         description,
