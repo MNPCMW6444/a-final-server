@@ -1,4 +1,3 @@
-// todo
 const typeDefs = `
   scalar Date
 
