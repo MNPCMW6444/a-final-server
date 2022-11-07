@@ -1,38 +1,31 @@
-import Task from "./models/taskModel";
-import Event from "./models/eventModel";
+import TaskModel from "./models/taskModel";
+import EventModel from "./models/eventModel";
 import { PubSub } from "graphql-subscriptions";
+import { Event, Task } from "./types/index";
 
 const pubsub = new PubSub();
 
 export default {
   Query: {
     allTasks: async () => {
-      // { _id: 123123, name: "whatever"}
-      const tasks = await Task.find();
-      return tasks.map((x: any) => {
+      const tasks = (await TaskModel.find()) as Task[];
+      return tasks.map((x: Task) => {
         x._id = x._id.toString();
         return x;
       });
     },
     allEvents: async () => {
-      // { _id: 123123, name: "whatever"}
-      const tasks = await Event.find();
-      return tasks.map((x: any) => {
+      const tasks = (await EventModel.find()) as Event[];
+      return tasks.map((x: Event) => {
         x._id = x._id.toString();
         return x;
       });
     },
   },
   Mutation: {
-    editEvent: async (args: any) => {
-      const oldEvent = await Event.findById(args.newItem._id);
-      if (!args.newItem.title) return null;
-      if (!args.newItem.description) return null;
-      if (!args.newItem.beginningTime) return null;
-      if (!args.newItem.endingTime) return null;
-      if (!args.newItem.color) return null;
-      if (!args.newItem.location) return null;
-      if (!args.newItem.notificationTime) return null;
+    editEvent: async (_: undefined, { newItem }: { newItem: Event }) => {
+      const oldEvent = await EventModel.findById(newItem._id);
+
       const colorMap = new Map();
       colorMap.set("🔴", "Red");
       colorMap.set("🟠", "Orange");
@@ -43,14 +36,13 @@ export default {
       colorMap.set("⚫️", "Black");
       colorMap.set("⚪️", "White");
       colorMap.set("🟤", "Brown");
-      const title = args.newItem.title;
-      const description = args.newItem.description;
-      const beginningTime = new Date(args.newItem.beginningTime);
-      const endingTime = new Date(args.newItem.endingTime);
-      const color = colorMap.get(args.newItem.color);
-      const location = args.newItem.location;
-      const notificationTime = new Date(args.newItem.notificationTime);
-      const _id = (Math.random() * 10000) / 10000 + "";
+      const title = newItem.title;
+      const description = newItem.description;
+      const beginningTime = new Date(newItem.beginningTime);
+      const endingTime = new Date(newItem.endingTime);
+      const color = colorMap.get(newItem.color);
+      const location = newItem.location;
+      const notificationTime = new Date(newItem.notificationTime);
       if (oldEvent) oldEvent.title = title;
       if (oldEvent) oldEvent.description = description;
       if (oldEvent) oldEvent.beginningTime = beginningTime;
@@ -60,58 +52,45 @@ export default {
       if (oldEvent) oldEvent.notificationTime = notificationTime;
       const resAved = oldEvent && (await oldEvent.save());
 
-      pubsub.publish("newEvent", {
-        newEvent: resAved,
+      pubsub.publish("editEvent", {
+        editEvent: resAved,
       });
 
       return resAved;
     },
-    editTask: async (args: any) => {
-      const oldTask = await Task.findById(args._id);
-      if (!args.newItem.title) return null;
-      if (!args.newItem.description) return null;
-      if (!args.newItem.estimatedTime) return null;
-      if (!args.newItem.status) return null;
-      if (!args.newItem.priority) return null;
-      const title = args.newItem.title;
-      const description = args.newItem.description;
-      const estimatedTime = args.newItem.estimatedTime;
-      const status = args.newItem.status;
-      const priority = args.newItem.priority;
-      const _id = (Math.random() * 10000) / 10000 + "";
+    editTask: async (_: undefined, { newItem }: { newItem: Task }) => {
+      const oldTask = await TaskModel.findById(newItem._id);
+      const title = newItem.title;
+      const description = newItem.description;
+      const estimatedTime = newItem.estimatedTime;
+      const status = newItem.status;
+      const priority = newItem.priority;
       if (oldTask) oldTask.title = title;
       if (oldTask) oldTask.description = description;
       if (oldTask) oldTask.estimatedTime = estimatedTime;
       if (oldTask) oldTask.status = status;
       if (oldTask) oldTask.priority = priority;
-      if (oldTask) oldTask._id = _id;
       const resAved = oldTask && (await oldTask.save());
 
-      pubsub.publish("newTask", {
-        newTask: resAved,
+      pubsub.publish("edutTask", {
+        edutTask: resAved,
       });
 
       return resAved;
     },
-    createTask: async (args: any) => {
-      if (!args.newItem.title) return null;
-      if (!args.newItem.description) return null;
-      if (!args.newItem.estimatedTime) return null;
-      if (!args.newItem.status) return null;
-      if (!args.newItem.priority) return null;
-      const title = args.newItem.title;
-      const description = args.newItem.description;
-      const estimatedTime = args.newItem.estimatedTime;
-      const status = args.newItem.status;
-      const priority = args.newItem.priority;
-      const _id = (Math.random() * 10000) / 10000 + "";
-      const newTask = new Task({
+    createTask: async (_: undefined, { newItem }: { newItem: Task }) => {
+      const title = newItem.title;
+      const description = newItem.description;
+      const estimatedTime = newItem.estimatedTime;
+      const status = newItem.status;
+      const priority = newItem.priority;
+
+      const newTask = new TaskModel({
         title,
         description,
         estimatedTime,
         status,
         priority,
-        _id,
       });
       const resAved = await newTask.save();
 
@@ -121,14 +100,7 @@ export default {
 
       return resAved;
     },
-    createEvent: async (args: any) => {
-      if (!args.newItem.title) return null;
-      if (!args.newItem.description) return null;
-      if (!args.newItem.beginningTime) return null;
-      if (!args.newItem.endingTime) return null;
-      if (!args.newItem.color) return null;
-      if (!args.newItem.location) return null;
-      if (!args.newItem.notificationTime) return null;
+    createEvent: async (_: undefined, { newItem }: { newItem: Event }) => {
       const colorMap = new Map();
       colorMap.set("🔴", "Red");
       colorMap.set("🟠", "Orange");
@@ -139,15 +111,14 @@ export default {
       colorMap.set("⚫️", "Black");
       colorMap.set("⚪️", "White");
       colorMap.set("🟤", "Brown");
-      const title = args.newItem.title;
-      const description = args.newItem.description;
-      const beginningTime = new Date(args.newItem.beginningTime);
-      const endingTime = new Date(args.newItem.endingTime);
-      const color = colorMap.get(args.newItem.color);
-      const location = args.newItem.location;
-      const notificationTime = new Date(args.newItem.notificationTime);
-      const _id = (Math.random() * 10000) / 10000 + "";
-      const newTask = new Event({
+      const title = newItem.title;
+      const description = newItem.description;
+      const beginningTime = new Date(newItem.beginningTime);
+      const endingTime = new Date(newItem.endingTime);
+      const color = colorMap.get(newItem.color);
+      const location = newItem.location;
+      const notificationTime = new Date(newItem.notificationTime);
+      const newTask = new EventModel({
         title,
         description,
         beginningTime,
@@ -155,7 +126,6 @@ export default {
         color,
         location,
         notificationTime,
-        _id,
       });
       const resAved = await newTask.save();
 
@@ -165,36 +135,46 @@ export default {
 
       return resAved;
     },
-    deleteTask: async (args: any) => {
-      const id = args.id;
-      await Task.deleteOne({ _id: id });
+    deleteTask: async (_: undefined, { id }: { id: string }) => {
+      const _id = id;
+      const deleted = await TaskModel.findById(_id);
+      await TaskModel.findByIdAndDelete(_id);
 
       pubsub.publish("deletedTask", {
-        deletedEvent: id,
+        deletedTask: deleted,
       });
 
-      return {};
+      return deleted;
     },
-    deleteEvent: async (args: any) => {
-      const id = args.id;
-      await Event.deleteOne({ _id: id });
+    deleteEvent: async (_: undefined, { id }: { id: string }) => {
+      const _id = id;
+      const deleted = await EventModel.findById(_id);
+      await EventModel.findByIdAndDelete(_id);
 
       pubsub.publish("deletedEvent", {
-        deletedEvent: id,
+        deletedEvent: deleted,
       });
 
-      return {};
+      return deleted;
     },
   },
   Subscription: {
     newEvent: {
-      subscribe() {
-        return pubsub.asyncIterator("newEvent");
-      },
+      subscribe: () => pubsub.asyncIterator("newEvent"),
     },
     newTask: {
       subscribe() {
         return pubsub.asyncIterator("newTask");
+      },
+    },
+    editEvent: {
+      subscribe() {
+        return pubsub.asyncIterator("editEvent");
+      },
+    },
+    editTask: {
+      subscribe() {
+        return pubsub.asyncIterator("editTask");
       },
     },
     deletedEvent: {
