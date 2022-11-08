@@ -11,11 +11,6 @@ import cors from "cors";
 import resolvers from "./resolvers";
 import typeDefs from "./schema";
 import mongoose from "mongoose";
-import EventModel from "./models/eventModel";
-import TaskModel from "./models/taskModel";
-import { PubSub } from "graphql-subscriptions";
-import { subscribtions } from "./types/enums";
-import taskModel from "./models/taskModel";
 
 mongoose.connect(
   "mongodb+srv://mnpcmw:cPUVRnT2exAgrles@cluster0.inulk.mongodb.net/finalProject?retryWrites=true&w=majority"
@@ -62,51 +57,4 @@ server.start().then(() => {
   httpServer.listen(PORT, () => {
     console.log(`Server is now running on http://localhost:${PORT}/graphql`);
   });
-});
-
-const pubsub = new PubSub();
-
-EventModel.watch().on("change", async (event) => {
-  if (event.operationType === "delete")
-    pubsub.publish(
-      subscribtions.deletedEvent,
-      event.documentKey._id.toString()
-    );
-  else if (event.operationType === "update") {
-    const originalDocument = await EventModel.findById(
-      event.documentKey._id.toString()
-    );
-    const parsedDocument = {
-      ...originalDocument,
-      _id: originalDocument?._id.toString(),
-    };
-    pubsub.publish(subscribtions.editEvent, {
-      editEvent: parsedDocument,
-    });
-  } else
-    event.operationType === "insert" &&
-      pubsub.publish(subscribtions.newEvent, {
-        newEvent: await EventModel.findById(event.documentKey._id.toString()),
-      });
-});
-
-taskModel.watch().on("change", async (event) => {
-  if (event.operationType === "delete")
-    pubsub.publish(subscribtions.deletedTask, event.documentKey._id.toString());
-  else if (event.operationType === "update") {
-    const originalDocument = await TaskModel.findById(
-      event.documentKey._id.toString()
-    );
-    const parsedDocument = {
-      ...originalDocument,
-      _id: originalDocument?._id.toString(),
-    };
-    pubsub.publish(subscribtions.editTask, {
-      editTask: parsedDocument,
-    });
-  } else
-    event.operationType === "insert" &&
-      pubsub.publish(subscribtions.newTask, {
-        newTask: await TaskModel.findById(event.documentKey._id.toString()),
-      });
 });

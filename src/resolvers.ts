@@ -16,6 +16,38 @@ colorMap.set("⚫️", "Black");
 colorMap.set("⚪️", "White");
 colorMap.set("🟤", "Brown");
 
+EventModel.watch().on("change", async (event) => {
+  if (event.operationType === "delete")
+    pubsub.publish(subscribtions.deletedEvent, {
+      deletedEvent: event.documentKey._id.toString(),
+    });
+  else if (event.operationType === "update") {
+    pubsub.publish(subscribtions.editEvent, {
+      editEvent: await EventModel.findById(event.documentKey._id.toString()),
+    });
+  } else
+    event.operationType === "insert" &&
+      pubsub.publish(subscribtions.newEvent, {
+        newEvent: await EventModel.findById(event.documentKey._id.toString()),
+      });
+});
+
+TaskModel.watch().on("change", async (event) => {
+  if (event.operationType === "delete")
+    pubsub.publish(subscribtions.deletedTask, {
+      deletedTask: event.documentKey._id.toString(),
+    });
+  else if (event.operationType === "update") {
+    pubsub.publish(subscribtions.editTask, {
+      editTask: await TaskModel.findById(event.documentKey._id.toString()),
+    });
+  } else
+    event.operationType === "insert" &&
+      pubsub.publish(subscribtions.newTask, {
+        newTask: await TaskModel.findById(event.documentKey._id.toString()),
+      });
+});
+
 export default {
   Query: {
     allTasks: async () => {
@@ -50,7 +82,7 @@ export default {
             "Can't find the Event to edit. Check The _id - it might be wrong.",
         };
       const savedDocument = oldEvent && (await oldEvent.save());
-      //pubsub.publish("editEvent", { editEvent: savedDocument });
+
       return savedDocument;
     },
     editTask: async (_: undefined, { newItem }: { newItem: Task }) => {
@@ -67,7 +99,7 @@ export default {
             "Can't find the Task to edit. Check The _id - it might be wrong.",
         };
       const savedDocument = oldTask && (await oldTask.save());
-      //pubsub.publish("edutTask", { edutTask: savedDocument });
+
       return savedDocument;
     },
     createTask: async (_: undefined, { newItem }: { newItem: Task }) => {
@@ -79,7 +111,7 @@ export default {
         priority: newItem.priority,
       });
       const savedDocument = await newTask.save();
-      //pubsub.publish("newTask", { newTask: savedDocument });
+
       return savedDocument;
     },
     createEvent: async (_: undefined, { newItem }: { newItem: Event }) => {
@@ -93,14 +125,14 @@ export default {
         notificationTime: new Date(newItem.notificationTime + ""),
       });
       const savedDocument = await newTask.save();
-      //pubsub.publish("newEvent", { newEvent: savedDocument });
+
       return savedDocument;
     },
     deleteTask: async (_: undefined, { id }: { id: string }) => {
       const toDelete = await TaskModel.findById(id);
       if (toDelete) {
         await TaskModel.findByIdAndDelete(id);
-        //pubsub.publish("deletedTask", id);
+
         return id;
       } else
         return {
@@ -112,7 +144,7 @@ export default {
       const toDelete = await EventModel.findById(id);
       if (toDelete) {
         await EventModel.findByIdAndDelete(id);
-        //pubsub.publish("deletedEvent", id);
+
         return id;
       } else
         return {
