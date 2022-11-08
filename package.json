@@ -15,7 +15,6 @@
   },
   "author": "Michael Nusair",
   "license": "ISC",
-  "bugs": {},
   "dependencies": {
     "@apollo/server": "^4.1.0",
     "@graphql-tools/schema": "^9.0.8",

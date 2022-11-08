@@ -35,95 +35,89 @@ export default {
   Mutation: {
     editEvent: async (_: undefined, { newItem }: { newItem: Event }) => {
       const oldEvent = await EventModel.findById(newItem._id);
-      const title = newItem.title;
-      const description = newItem.description;
-      const beginningTime = new Date(newItem.beginningTime);
-      const endingTime = new Date(newItem.endingTime);
-      const color = colorMap.get(newItem.color);
-      const location = newItem.location;
-      const notificationTime = new Date(newItem.notificationTime + "");
       if (oldEvent) {
-        oldEvent.title = title;
-        oldEvent.description = description;
-        oldEvent.beginningTime = beginningTime;
-        oldEvent.endingTime = endingTime;
-        oldEvent.color = color;
-        oldEvent.location = location;
-        oldEvent.notificationTime = notificationTime;
-      }
+        oldEvent.title = newItem.title;
+        oldEvent.description = newItem.description;
+        oldEvent.beginningTime = new Date(newItem.beginningTime);
+        oldEvent.endingTime = new Date(newItem.endingTime);
+        oldEvent.color = colorMap.get(newItem.color);
+        oldEvent.location = newItem.location;
+        oldEvent.notificationTime = new Date(newItem.notificationTime + "");
+      } else
+        return {
+          errorMessage:
+            "Can't find the Event to edit. Check The _id - it might be wrong.",
+        };
       const savedDocument = oldEvent && (await oldEvent.save());
       pubsub.publish("editEvent", { editEvent: savedDocument });
       return savedDocument;
     },
     editTask: async (_: undefined, { newItem }: { newItem: Task }) => {
       const oldTask = await TaskModel.findById(newItem._id);
-      const title = newItem.title;
-      const description = newItem.description;
-      const estimatedTime = newItem.estimatedTime;
-      const status = newItem.status;
-      const priority = newItem.priority;
       if (oldTask) {
-        oldTask.title = title;
-        oldTask.description = description;
-        oldTask.estimatedTime = estimatedTime;
-        oldTask.status = status;
-        oldTask.priority = priority;
-      }
+        oldTask.title = newItem.title;
+        oldTask.description = newItem.description;
+        oldTask.estimatedTime = newItem.estimatedTime;
+        oldTask.status = newItem.status;
+        oldTask.priority = newItem.priority;
+      } else
+        return {
+          errorMessage:
+            "Can't find the Task to edit. Check The _id - it might be wrong.",
+        };
       const savedDocument = oldTask && (await oldTask.save());
       pubsub.publish("edutTask", { edutTask: savedDocument });
       return savedDocument;
     },
     createTask: async (_: undefined, { newItem }: { newItem: Task }) => {
-      const title = newItem.title;
-      const description = newItem.description;
-      const estimatedTime = newItem.estimatedTime;
-      const status = newItem.status;
-      const priority = newItem.priority;
       const newTask = new TaskModel({
-        title,
-        description,
-        estimatedTime,
-        status,
-        priority,
+        title: newItem.title,
+        description: newItem.description,
+        estimatedTime: newItem.estimatedTime,
+        status: newItem.status,
+        priority: newItem.priority,
       });
       const savedDocument = await newTask.save();
       pubsub.publish("newTask", { newTask: savedDocument });
       return savedDocument;
     },
     createEvent: async (_: undefined, { newItem }: { newItem: Event }) => {
-      const title = newItem.title;
-      const description = newItem.description;
-      const beginningTime = new Date(newItem.beginningTime);
-      const endingTime = new Date(newItem.endingTime);
-      const color = colorMap.get(newItem.color);
-      const location = newItem.location;
-      const notificationTime = new Date(newItem.notificationTime + "");
       const newTask = new EventModel({
-        title,
-        description,
-        beginningTime,
-        endingTime,
-        color,
-        location,
-        notificationTime,
+        title: newItem.title,
+        description: newItem.description,
+        beginningTime: new Date(newItem.beginningTime),
+        endingTime: new Date(newItem.endingTime),
+        color: colorMap.get(newItem.color),
+        location: newItem.location,
+        notificationTime: new Date(newItem.notificationTime + ""),
       });
       const savedDocument = await newTask.save();
       pubsub.publish("newEvent", { newEvent: savedDocument });
       return savedDocument;
     },
     deleteTask: async (_: undefined, { id }: { id: string }) => {
-      const _id = id;
-      const deleted = await TaskModel.findById(_id);
-      await TaskModel.findByIdAndDelete(_id);
-      pubsub.publish("deletedTask", { deletedTask: deleted });
-      return deleted;
+      const toDelete = await TaskModel.findById(id);
+      if (toDelete) {
+        await TaskModel.findByIdAndDelete(id);
+        pubsub.publish("deletedTask", { deletedTask: toDelete });
+        return id;
+      } else
+        return {
+          errorMessage:
+            "Can't find the Task to delete. Check The _id - it might be wrong.",
+        };
     },
     deleteEvent: async (_: undefined, { id }: { id: string }) => {
-      const _id = id;
-      const deleted = await EventModel.findById(_id);
-      await EventModel.findByIdAndDelete(_id);
-      pubsub.publish("deletedEvent", { deletedEvent: deleted });
-      return deleted;
+      const toDelete = await EventModel.findById(id);
+      if (toDelete) {
+        await EventModel.findByIdAndDelete(id);
+        pubsub.publish("deletedEvent", { deletedEvent: toDelete });
+        return id;
+      } else
+        return {
+          errorMessage:
+            "Can't find the Event to delete. Check The _id - it might be wrong.",
+        };
     },
   },
   Subscription: {

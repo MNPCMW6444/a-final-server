@@ -1,5 +1,6 @@
+import typeDefs from "../schema";
+
 interface Item {
-  __typename: any;
   _id: string;
   type: string;
   title: string;
@@ -24,10 +25,4 @@ interface Task extends Item {
   untilDate: string;
 }
 
-type FilterFunction = (item: Item) => boolean;
-
-type SortFunction = (itemA: Item, itemB: Item) => number;
-
-SortFunction;
-
-export type { Item, Event, Task, FilterFunction, SortFunction };
+export type { Item, Event, Task };
