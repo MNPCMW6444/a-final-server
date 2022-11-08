@@ -14,6 +14,8 @@ import mongoose from "mongoose";
 import EventModel from "./models/eventModel";
 import TaskModel from "./models/taskModel";
 import { PubSub } from "graphql-subscriptions";
+import { subscribtions } from "./types/enums";
+import taskModel from "./models/taskModel";
 
 mongoose.connect(
   "mongodb+srv://mnpcmw:cPUVRnT2exAgrles@cluster0.inulk.mongodb.net/finalProject?retryWrites=true&w=majority"
@@ -65,22 +67,46 @@ server.start().then(() => {
 const pubsub = new PubSub();
 
 EventModel.watch().on("change", async (event) => {
-  event.operationType === "delete"
-    ? pubsub.publish("deletedEvent", {
-        deletedEvent: { _id: event.documentKey._id.toString() },
-      })
-    : event.operationType === "update"
-    ? pubsub.publish("editedTask", {
-        editedTask: await EventModel.findById(event.documentKey._id.toString()),
-      })
-    : pubsub.publish("newEvent", {
+  if (event.operationType === "delete")
+    pubsub.publish(
+      subscribtions.deletedEvent,
+      event.documentKey._id.toString()
+    );
+  else if (event.operationType === "update") {
+    const originalDocument = await EventModel.findById(
+      event.documentKey._id.toString()
+    );
+    const parsedDocument = {
+      ...originalDocument,
+      _id: originalDocument?._id.toString(),
+    };
+    pubsub.publish(subscribtions.editEvent, {
+      editEvent: parsedDocument,
+    });
+  } else
+    event.operationType === "insert" &&
+      pubsub.publish(subscribtions.newEvent, {
         newEvent: await EventModel.findById(event.documentKey._id.toString()),
       });
 });
 
-TaskModel.watch().on("create", (event) => {
-  console.log(event);
-  /*  pubsub.asyncIterator("newTask");
-  pubsub.asyncIterator("editTask");
-  pubsub.asyncIterator("deletedTask"); */
+taskModel.watch().on("change", async (event) => {
+  if (event.operationType === "delete")
+    pubsub.publish(subscribtions.deletedTask, event.documentKey._id.toString());
+  else if (event.operationType === "update") {
+    const originalDocument = await TaskModel.findById(
+      event.documentKey._id.toString()
+    );
+    const parsedDocument = {
+      ...originalDocument,
+      _id: originalDocument?._id.toString(),
+    };
+    pubsub.publish(subscribtions.editTask, {
+      editTask: parsedDocument,
+    });
+  } else
+    event.operationType === "insert" &&
+      pubsub.publish(subscribtions.newTask, {
+        newTask: await TaskModel.findById(event.documentKey._id.toString()),
+      });
 });

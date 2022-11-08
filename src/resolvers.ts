@@ -2,6 +2,7 @@ import TaskModel from "./models/taskModel";
 import EventModel from "./models/eventModel";
 import { PubSub } from "graphql-subscriptions";
 import { Event, Task } from "./types/index";
+import { subscribtions } from "./types/enums";
 
 const pubsub = new PubSub();
 const colorMap = new Map();
@@ -49,7 +50,7 @@ export default {
             "Can't find the Event to edit. Check The _id - it might be wrong.",
         };
       const savedDocument = oldEvent && (await oldEvent.save());
-      pubsub.publish("editEvent", { editEvent: savedDocument });
+      //pubsub.publish("editEvent", { editEvent: savedDocument });
       return savedDocument;
     },
     editTask: async (_: undefined, { newItem }: { newItem: Task }) => {
@@ -66,7 +67,7 @@ export default {
             "Can't find the Task to edit. Check The _id - it might be wrong.",
         };
       const savedDocument = oldTask && (await oldTask.save());
-      pubsub.publish("edutTask", { edutTask: savedDocument });
+      //pubsub.publish("edutTask", { edutTask: savedDocument });
       return savedDocument;
     },
     createTask: async (_: undefined, { newItem }: { newItem: Task }) => {
@@ -78,7 +79,7 @@ export default {
         priority: newItem.priority,
       });
       const savedDocument = await newTask.save();
-      pubsub.publish("newTask", { newTask: savedDocument });
+      //pubsub.publish("newTask", { newTask: savedDocument });
       return savedDocument;
     },
     createEvent: async (_: undefined, { newItem }: { newItem: Event }) => {
@@ -92,14 +93,14 @@ export default {
         notificationTime: new Date(newItem.notificationTime + ""),
       });
       const savedDocument = await newTask.save();
-      pubsub.publish("newEvent", { newEvent: savedDocument });
+      //pubsub.publish("newEvent", { newEvent: savedDocument });
       return savedDocument;
     },
     deleteTask: async (_: undefined, { id }: { id: string }) => {
       const toDelete = await TaskModel.findById(id);
       if (toDelete) {
         await TaskModel.findByIdAndDelete(id);
-        pubsub.publish("deletedTask", { deletedTask: toDelete });
+        //pubsub.publish("deletedTask", id);
         return id;
       } else
         return {
@@ -111,7 +112,7 @@ export default {
       const toDelete = await EventModel.findById(id);
       if (toDelete) {
         await EventModel.findByIdAndDelete(id);
-        pubsub.publish("deletedEvent", { deletedEvent: toDelete });
+        //pubsub.publish("deletedEvent", id);
         return id;
       } else
         return {
@@ -121,31 +122,21 @@ export default {
     },
   },
   Subscription: {
-    newEvent: { subscribe: () => pubsub.asyncIterator("newEvent") },
-    newTask: {
-      subscribe() {
-        return pubsub.asyncIterator("newTask");
-      },
+    newEvent: {
+      subscribe: () => pubsub.asyncIterator(subscribtions.newEvent),
     },
+    newTask: { subscribe: () => pubsub.asyncIterator(subscribtions.newTask) },
     editEvent: {
-      subscribe() {
-        return pubsub.asyncIterator("editEvent");
-      },
+      subscribe: () => pubsub.asyncIterator(subscribtions.editEvent),
     },
     editTask: {
-      subscribe() {
-        return pubsub.asyncIterator("editTask");
-      },
+      subscribe: () => pubsub.asyncIterator(subscribtions.editTask),
     },
     deletedEvent: {
-      subscribe() {
-        return pubsub.asyncIterator("deletedEvent");
-      },
+      subscribe: () => pubsub.asyncIterator(subscribtions.deletedEvent),
     },
     deletedTask: {
-      subscribe() {
-        return pubsub.asyncIterator("deletedTask");
-      },
+      subscribe: () => pubsub.asyncIterator(subscribtions.deletedTask),
     },
   },
 };

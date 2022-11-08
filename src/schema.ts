@@ -26,20 +26,20 @@ const typeDefs = `
   }
 
   input EventInput {
-    _id: String!
+    _id: String
     title: String!
     description: String!
     beginningTime: Date!
     endingTime: Date!
     color: String!
-    invitedGuests: [String!]!
+    invitedGuests: [String]
     location: String
     notificationTime: Date
-    type: String!
+    type: String
   }
 
   input TaskInput {
-    _id: String!
+    _id: String
     title: String!
     description: String!
     estimatedTime: String!
@@ -48,7 +48,7 @@ const typeDefs = `
     untilDate: Date
     review: String
     timeSpent: String
-    type: String!
+    type: String
   }
 
 
@@ -62,8 +62,8 @@ const typeDefs = `
     editTask(newItem: TaskInput): Task
     createTask(newItem: TaskInput):  Task
     createEvent(newItem: EventInput): Event
-    deleteTask(id: String):  Task
-    deleteEvent(id: String): Event
+    deleteTask(id: String):  String
+    deleteEvent(id: String): String
   }
 
   type Subscription {
@@ -71,8 +71,8 @@ const typeDefs = `
     newTask: Task
     editEvent: Event
     editTask: Task
-    deletedEvent: Event
-    deletedTask: Task
+    deletedEvent: String
+    deletedTask: String
   }
 `;
 
