@@ -2,7 +2,7 @@ import TaskModel from "./models/taskModel";
 import EventModel from "./models/eventModel";
 import { PubSub } from "graphql-subscriptions";
 import { Event, Task } from "./types/index";
-import { subscribtions } from "./types/enums";
+import { subscribtions, subscribtionTypes } from "./types/enums";
 
 const pubsub = new PubSub();
 const colorMap = new Map();
@@ -18,33 +18,51 @@ colorMap.set("🟤", "Brown");
 
 EventModel.watch().on("change", async (event) => {
   if (event.operationType === "delete")
-    pubsub.publish(subscribtions.deletedEvent, {
-      deletedEvent: event.documentKey._id.toString(),
+    pubsub.publish(subscribtions.eventMutation, {
+      eventMutation: {
+        type: subscribtionTypes.delete,
+        id: event.documentKey._id.toString(),
+      },
     });
   else if (event.operationType === "update") {
-    pubsub.publish(subscribtions.editEvent, {
-      editEvent: await EventModel.findById(event.documentKey._id.toString()),
+    pubsub.publish(subscribtions.eventMutation, {
+      eventMutation: {
+        type: subscribtionTypes.edit,
+        event: await EventModel.findById(event.documentKey._id.toString()),
+      },
     });
   } else
     event.operationType === "insert" &&
-      pubsub.publish(subscribtions.newEvent, {
-        newEvent: await EventModel.findById(event.documentKey._id.toString()),
+      pubsub.publish(subscribtions.eventMutation, {
+        eventMutation: {
+          type: subscribtionTypes.add,
+          event: await EventModel.findById(event.documentKey._id.toString()),
+        },
       });
 });
 
 TaskModel.watch().on("change", async (event) => {
   if (event.operationType === "delete")
-    pubsub.publish(subscribtions.deletedTask, {
-      deletedTask: event.documentKey._id.toString(),
+    pubsub.publish(subscribtions.taskMutation, {
+      taskMutation: {
+        type: subscribtionTypes.delete,
+        id: event.documentKey._id.toString(),
+      },
     });
   else if (event.operationType === "update") {
-    pubsub.publish(subscribtions.editTask, {
-      editTask: await TaskModel.findById(event.documentKey._id.toString()),
+    pubsub.publish(subscribtions.taskMutation, {
+      taskMutation: {
+        type: subscribtionTypes.edit,
+        task: await TaskModel.findById(event.documentKey._id.toString()),
+      },
     });
   } else
     event.operationType === "insert" &&
-      pubsub.publish(subscribtions.newTask, {
-        newTask: await TaskModel.findById(event.documentKey._id.toString()),
+      pubsub.publish(subscribtions.taskMutation, {
+        taskMutation: {
+          type: subscribtionTypes.add,
+          task: await TaskModel.findById(event.documentKey._id.toString()),
+        },
       });
 });
 
@@ -154,21 +172,11 @@ export default {
     },
   },
   Subscription: {
-    newEvent: {
-      subscribe: () => pubsub.asyncIterator(subscribtions.newEvent),
+    eventMutation: {
+      subscribe: () => pubsub.asyncIterator(subscribtions.eventMutation),
     },
-    newTask: { subscribe: () => pubsub.asyncIterator(subscribtions.newTask) },
-    editEvent: {
-      subscribe: () => pubsub.asyncIterator(subscribtions.editEvent),
-    },
-    editTask: {
-      subscribe: () => pubsub.asyncIterator(subscribtions.editTask),
-    },
-    deletedEvent: {
-      subscribe: () => pubsub.asyncIterator(subscribtions.deletedEvent),
-    },
-    deletedTask: {
-      subscribe: () => pubsub.asyncIterator(subscribtions.deletedTask),
+    taskMutation: {
+      subscribe: () => pubsub.asyncIterator(subscribtions.taskMutation),
     },
   },
 };

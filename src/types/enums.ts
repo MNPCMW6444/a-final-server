@@ -1,9 +1,11 @@
 enum subscribtions {
-  newEvent = "newEvent",
-  newTask = "newTask",
-  editEvent = "editEvent",
-  editTask = "editTask",
-  deletedEvent = "deletedEvent",
-  deletedTask = "deletedTask",
+  eventMutation = "eventMutation",
+  taskMutation = "taskMutation",
 }
-export { subscribtions };
+
+enum subscribtionTypes {
+  add = "add",
+  edit = "edit",
+  delete = "delete",
+}
+export { subscribtions, subscribtionTypes };

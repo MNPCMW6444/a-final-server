@@ -66,13 +66,21 @@ const typeDefs = `
     deleteEvent(id: String): String
   }
 
+  type EventMutation {
+    type: String!
+    event: Event
+    id: String
+  }
+
+  type TaskMutation {
+    type: String!
+    task: Task
+    id: String
+  }
+
   type Subscription {
-    newEvent: Event
-    newTask: Task
-    editEvent: Event
-    editTask: Task
-    deletedEvent: String
-    deletedTask: String
+    eventMutation: EventMutation
+    taskMutation: TaskMutation
   }
 `;
 
