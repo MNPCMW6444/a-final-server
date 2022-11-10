@@ -12,9 +12,11 @@ import resolvers from "./resolvers";
 import typeDefs from "./schema";
 import mongoose from "mongoose";
 
-mongoose.connect(
-  "mongodb+srv://mnpcmw:cPUVRnT2exAgrles@cluster0.inulk.mongodb.net/finalProject?retryWrites=true&w=majority"
-);
+mongoose
+  .connect(
+    "mongodb+srv://mnpcmw:cPUVRnT2exAgrles@cluster0.inulk.mongodb.net/finalProject?retryWrites=true&w=majority"
+  )
+  .then(() => console.log("DB conn is good"));
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 

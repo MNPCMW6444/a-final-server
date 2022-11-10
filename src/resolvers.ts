@@ -17,6 +17,7 @@ colorMap.set("⚪️", "White");
 colorMap.set("🟤", "Brown");
 
 EventModel.watch().on("change", async (event) => {
+  console.log(event);
   if (event.operationType === "delete")
     pubsub.publish(subscribtions.eventMutation, {
       eventMutation: {
@@ -85,6 +86,7 @@ export default {
   },
   Mutation: {
     editEvent: async (_: undefined, { newItem }: { newItem: Event }) => {
+      console.log(newItem);
       const oldEvent = await EventModel.findById(newItem._id);
       if (oldEvent) {
         oldEvent.title = newItem.title;
