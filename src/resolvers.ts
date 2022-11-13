@@ -17,7 +17,6 @@ colorMap.set("⚪️", "White");
 colorMap.set("🟤", "Brown");
 
 EventModel.watch().on("change", async (event) => {
-  console.log(event);
   if (event.operationType === "delete")
     pubsub.publish(subscribtions.eventMutation, {
       eventMutation: {
@@ -86,7 +85,6 @@ export default {
   },
   Mutation: {
     editEvent: async (_: undefined, { newItem }: { newItem: Event }) => {
-      console.log(newItem);
       const oldEvent = await EventModel.findById(newItem._id);
       if (oldEvent) {
         oldEvent.title = newItem.title;
@@ -96,30 +94,31 @@ export default {
         oldEvent.color = colorMap.get(newItem.color);
         oldEvent.location = newItem.location;
         oldEvent.notificationTime = new Date(newItem.notificationTime + "");
-      } else
+      } else {
         return {
           errorMessage:
             "Can't find the Event to edit. Check The _id - it might be wrong.",
         };
+      }
       const savedDocument = oldEvent && (await oldEvent.save());
 
       return savedDocument;
     },
     editTask: async (_: undefined, { newItem }: { newItem: Task }) => {
       const oldTask = await TaskModel.findById(newItem._id);
+      const { title, description, estimatedTime, status, priority } = newItem;
       if (oldTask) {
-        oldTask.title = newItem.title;
-        oldTask.description = newItem.description;
-        oldTask.estimatedTime = newItem.estimatedTime;
-        oldTask.status = newItem.status;
-        oldTask.priority = newItem.priority;
+        oldTask.title = title;
+        oldTask.description = description;
+        oldTask.estimatedTime = estimatedTime;
+        oldTask.status = status;
+        oldTask.priority = priority;
       } else
         return {
           errorMessage:
             "Can't find the Task to edit. Check The _id - it might be wrong.",
         };
       const savedDocument = oldTask && (await oldTask.save());
-
       return savedDocument;
     },
     createTask: async (_: undefined, { newItem }: { newItem: Task }) => {
