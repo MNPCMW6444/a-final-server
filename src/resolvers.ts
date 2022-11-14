@@ -42,7 +42,6 @@ EventModel.watch().on("change", async (event) => {
 });
 
 TaskModel.watch().on("change", async (event) => {
-  console.log(event);
   if (event.operationType === "delete")
     pubsub.publish(subscribtions.taskMutation, {
       taskMutation: {
