@@ -8,7 +8,7 @@
     "url": "https://github.com/MNPCMW6444/a-final-server"
   },
   "scripts": {
-    "start": "node ./built/index.js",
+    "start": "node ./built/index.ts",
     "dev": "ts-node-dev --respawn --transpile-only --exit-child --watch src src/index.ts"
   },
   "author": "Michael Nusair",
