@@ -160,6 +160,7 @@ export default {
         };
     },
     deleteEvent: async (_: undefined, { id }: { id: string }) => {
+      console.log(id);
       const toDelete = await EventModel.findById(id);
       if (toDelete) {
         await EventModel.findByIdAndDelete(id);
