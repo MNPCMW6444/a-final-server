@@ -151,7 +151,6 @@ export default {
       const toDelete = await TaskModel.findById(id);
       if (toDelete) {
         await TaskModel.findByIdAndDelete(id);
-
         return id;
       } else
         return {
@@ -164,7 +163,6 @@ export default {
       const toDelete = await EventModel.findById(id);
       if (toDelete) {
         await EventModel.findByIdAndDelete(id);
-
         return id;
       } else
         return {
