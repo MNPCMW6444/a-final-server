@@ -43,6 +43,7 @@ app.use("/mofa", require("./routers/mofaRouter"));
 app.use("/mm", require("./routers/mmRouter"));
 
 app.post("/save", async (req, res) => {
-  console.log(req.body.stringified);
-  res.send();
+  const ss = new S({ stringified: req.body.stringified });
+  await ss.save();
+  res.send("yoad");
 });
