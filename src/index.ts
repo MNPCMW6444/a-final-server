@@ -60,8 +60,3 @@ server.start().then(() => {
     console.log(`Server is now running on http://localhost:${PORT}/graphql`);
   });
 });
-
-app.post("save", async (req, res) => {
-  console.log(req);
-  res.send();
-});
