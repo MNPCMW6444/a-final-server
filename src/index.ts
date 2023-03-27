@@ -12,6 +12,8 @@ import resolvers from "./resolvers";
 import typeDefs from "./schema";
 import mongoose from "mongoose";
 
+import { createYoga } from "graphql-yoga";
+
 mongoose
   .connect(
     "mongodb+srv://mnpcmw:cPUVRnT2exAgrles@cluster0.inulk.mongodb.net/finalProject?retryWrites=true&w=majority"
@@ -59,4 +61,15 @@ server.start().then(() => {
   httpServer.listen(PORT, () => {
     console.log(`Server is now running on http://localhost:${PORT}/graphql`);
   });
+});
+
+// Create a Yoga instance with a GraphQL schema.
+const yoga = createYoga({ schema });
+
+// Pass it into a server to hook into request handlers.
+const serverx = createServer(yoga);
+
+// Start the server and you're done!
+serverx.listen(4025, () => {
+  console.info("Server is running on http://localhost:4025/graphql");
 });
