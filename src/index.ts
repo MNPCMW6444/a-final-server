@@ -61,13 +61,6 @@ server.start().then(() => {
   });
 });
 
-app.use(
-  cors({
-    origin: ["http://localhost:3000"],
-    credentials: true,
-  })
-);
-
 app.post("save", async (req, res) => {
   console.log(req);
   res.send();
